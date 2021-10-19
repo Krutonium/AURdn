@@ -4,7 +4,13 @@ using System.Collections.Generic;
 namespace aurdn
 {
     public class FindUpdates
-    {
+    {  
+        /// <summary>
+        /// Compares the local and remote databases, and returns a Dictionary of packages that have mismatched version numbers.
+        /// </summary>
+        /// <param name="LocalDB">Local DB from localDBParser</param>
+        /// <param name="RemoteDB">Remote DB from remoteDBParser</param>
+        /// <returns>Dictionary(Package Name, Version String)</returns>
         public Dictionary<string,string> CheckForUpdates(Dictionary<string, string> LocalDB,
             Dictionary<string, string> RemoteDB)
         {
@@ -21,7 +27,6 @@ namespace aurdn
                     }
                 }
             }
-
             return toUpdate;
         }
     }

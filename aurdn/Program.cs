@@ -25,7 +25,9 @@ namespace aurdn
             Console.WriteLine();
             Console.WriteLine("Update?");
             DownloadAndInstallUpdates installUpdates = new DownloadAndInstallUpdates();
-            installUpdates.Update(localPackages, Updates);
+            installUpdates.Update(Updates);
+            
+            //This is all temporary and should be replaced. Right now it just wholesale updates your system.
         }
     }
 }

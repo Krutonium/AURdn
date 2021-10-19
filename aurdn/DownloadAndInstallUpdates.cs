@@ -8,10 +8,12 @@ namespace aurdn
     {
         //makepkg -si
         //git clone https://aur.archlinux.org/<package>.git
-
-        public void Update(Dictionary<string, string> LocalDB, Dictionary<string, string> Updates)
+        /// <summary>
+        /// Downloads, Builds, and Installs packages from the AUR
+        /// </summary>
+        /// <param name="Updates">The packages we need to update.</param>
+        public void Update(Dictionary<string, string> Updates)
         {
-            //Instead of using a library, it's probably better to use the system git binary.
             if (!Directory.Exists("/tmp/builddir"))
             {
                 Directory.CreateDirectory("/tmp/builddir");
@@ -21,11 +23,23 @@ namespace aurdn
                 Directory.Delete("/tmp/builddir", true);
                 Directory.CreateDirectory("/tmp/builddir");
             }
+            //Clean Build Directory OP
+            
+            
             ProcessStartInfo PSI = new ProcessStartInfo();
             PSI.EnvironmentVariables.Add("PKGDEST", "/tmp/pkgdir/");
             PSI.FileName = "git";
+            remoteDB_Parser remoteDB = new remoteDB_Parser();
+            
+            //var requirements = remoteDB.GetPackageReqirements(Updates);
+            //Update(requirements);
+            
+            //That function is not yet functional. Packages that require AUR packages in their makedepends that are not
+            //already installed will fail.
+            
             foreach (var item in Updates)
             {
+                
                 PSI.Arguments = "clone https://aur.archlinux.org/" + item.Key + ".git";
                 PSI.WorkingDirectory = "/tmp/builddir/";
                 Process.Start(PSI).WaitForExit();
@@ -35,12 +49,9 @@ namespace aurdn
                 Process.Start(PSI).WaitForExit();
                 PSI.FileName = "git";
             }
-
-            foreach (var file in "/tmp/pkgdir")
-            {
-                PSI.FileName = "sudo";
-                PSI.Arguments = "pacman -U *.tar.zst";
-            }
+            PSI.FileName = "sudo";
+            PSI.Arguments = "pacman -U *.tar.zst";
+            Process.Start(PSI).WaitForExit();
         }
     }
 }

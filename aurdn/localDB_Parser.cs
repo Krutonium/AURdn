@@ -7,7 +7,11 @@ namespace aurdn
     public class localDB_Parser
     {
         static string dbPath = "/var/lib/pacman/local/";
-
+        
+        /// <summary>
+        /// Creates a list of our locally installed packages.
+        /// </summary>
+        /// <returns>Dictionary of Program Name and Version</returns>
         public Dictionary<string, string> GetLocalPackages()
         {
             var packageList = new Dictionary<string, string>();
@@ -36,5 +40,6 @@ namespace aurdn
             }
             return packageList;
         }
+        
     }
 }
